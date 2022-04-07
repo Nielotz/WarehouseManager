@@ -12,6 +12,6 @@
 - Add "Container" - container in storage, eg. "Green carton", "Red cartoon", etc.
 - Add "Item" - what you want to store, eg. "Pasta", "Canned corn", etc.
 - [optional] Add "Shop"
-- [optional] "Amount unit" - unit in wchich you want to store item, eg. "kg", etc.
+- [optional] "Amount unit" - unit in which you want to store item, eg. "kg", etc.
 - Add / set "Item amount" - change of amount
 - [optional] Add "Alert"
