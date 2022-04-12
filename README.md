@@ -15,3 +15,6 @@
 - [optional] "Amount unit" - unit in which you want to store item, eg. "kg", etc.
 - Add / set "Item amount" - change of amount
 - [optional] Add "Alert"
+
+# Credits: <br>
+[Penguin logo by Johannes Schröter](https://www.pexels.com/photo/cold-snow-nature-bird-5302686/)
