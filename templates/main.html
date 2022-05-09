@@ -6,45 +6,92 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="../static/main/main.css">
 
+  <link rel="stylesheet" type="text/css" href="../static/main/debug.css">
+
+  <!-- Header CSS. -->
+  <link rel="stylesheet" type="text/css" href="../static/main/header/header.css">
+  <link rel="stylesheet" type="text/css" href="../static/main/header/user-section/user-section.css">
+  <link rel="stylesheet" type="text/css" href="../static/main/header/user-section/user-section__username.css">
+  <link rel="stylesheet" type="text/css" href="../static/main/header/user-section/user-section__logo.css">
+
+  <!-- Nav CSS. -->
+  <link rel="stylesheet" type="text/css" href="../static/main/side-shortcuts-holder/side-shortcuts-holder.css">
+  <link rel="stylesheet" type="text/css"
+        href="../static/main/side-shortcuts-holder/shortcuts-holder-section/side-shortcut-section.css">
+  <link rel="stylesheet" type="text/css"
+        href="../static/main/side-shortcuts-holder/shortcuts-holder-section/side-shortcut-section__header.css">
+  <link rel="stylesheet" type="text/css"
+        href="../static/main/side-shortcuts-holder/shortcuts-holder-section/side-shortcuts-items/side-shortcuts-items.css">
+  <link rel="stylesheet" type="text/css"
+        href="../static/main/side-shortcuts-holder/shortcuts-holder-section/side-shortcuts-items/side-shortcuts-subitems/side-shortcuts-subitem__header.css">
+  <link rel="stylesheet" type="text/css"
+        href="../static/main/side-shortcuts-holder/shortcuts-holder-section/side-shortcuts-items/side-shortcuts-subitems/side-shortcuts-subitem-items/side-shortcuts-subitem__item.css">
+  <link rel="stylesheet" type="text/css"
+        href="../static/main/side-shortcuts-holder/shortcuts-holder-section/side-shortcuts-items/side-shortcuts-subitems/side-shortcuts-subitem-items/side-shortcuts-subitem-items.css">
+
+  <!-- Main section CSS. -->
+  <link rel="stylesheet" type="text/css" href="../static/main/main-section/main-section.css">
+  <link rel="stylesheet" type="text/css" href="../static/main/main-section/items-displayer/items-displayer.css">
+  <link rel="stylesheet" type="text/css" href="../static/main/main-section/items-displayer/items-displayer-table/items-displayer-table.css">
+
+
 </head>
 <body>
 <header>
-  <div id="user-profile-section">
-    <div class="logo-with-username">
-      <img class=user-logo-image
-           src="../static/main/images/penguin_logo_200_200.jpg" alt="profile logo">
-      <span class="user-profile-username">Tuxy</span>
-    </div>
+  <!-- How to name it? It is logo + username (probably a button to open user settings) placed in top corner. -->
+  <div class="user-section">
+    <img class=user-section__logo-image src="../static/main/images/penguin_logo_200_200.jpg" alt="profile logo">
+    <span class="user-section__username">Tuxy</span>
   </div>
 </header>
-<nav>
-  <section class="nav-section">
-    <header class="nav-section-header">
-      SECTION HEADER
+<nav class="side-shortcuts-holder">
+  <section class="side-shortcut-section">
+    <header class="side-shortcut-section__header">
+      STORAGES
     </header>
-    <ul class="nav-section-ul-categories">
-      <li class="nav-section-ul-categories-li-items">
-        <a class="nav-section-ul-categories-li-items-ul-items-a-header">
+    <ul class="side-shortcuts-items">
+      <li class="side-shortcuts-subitems">
+        <a class="side-shortcuts-subitem__header side-shortcuts-subitem__header--selected">
           Category
         </a>
-        <ul class="nav-section-ul-categories-li-items-ul-items">
-          <li class="nav-section-ul-categories-li-items-ul-items-li-item">
+        <ul class="side-shortcuts-subitem-items">
+          <li class="side-shortcuts-subitem__item side-shortcuts-subitem__item--selected">
             Item
           </li>
-          <li class="nav-section-ul-categories-li-items-ul-items-li-item">
+          <li class="side-shortcuts-subitem__item">
             Item
           </li>
         </ul>
       </li>
-      <li class="nav-section-ul-categories-li-items">
-        <a class="nav-section-ul-categories-li-items-ul-items-a-header">
+      <li class="side-shortcuts-subitems">
+        <a class="side-shortcuts-subitem__header">
           Category
         </a>
-        <ul class="nav-section-ul-categories-li-items-ul-items">
-          <li class="nav-section-ul-categories-li-items-ul-items-li-item">
+        <ul class="side-shortcuts-subitem-items">
+          <li class="side-shortcuts-subitem__item">
             Item
           </li>
-          <li class="nav-section-ul-categories-li-items-ul-items-li-item">
+          <li class="side-shortcuts-subitem__item">
+            Item
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+  <section class="side-shortcut-section">
+    <header class="side-shortcut-section__header">
+      SECTION HEADER
+    </header>
+    <ul class="side-shortcuts-items">
+      <li class="side-shortcuts-subitems">
+        <a class="side-shortcuts-subitem__header">
+          Category
+        </a>
+        <ul class="side-shortcuts-subitem-items">
+          <li class="side-shortcuts-subitem__item">
+            Item
+          </li>
+          <li class="side-shortcuts-subitem__item">
             Item
           </li>
         </ul>
@@ -52,5 +99,29 @@
     </ul>
   </section>
 </nav>
+<main class="main-section debug--red--grey">
+  <section class="items-displayer debug--green--grey">
+    <header class="multi-level-select-list debug--red--grey">
+      <select class="my-selector" name="my-selector-category">
+        <option>CATEGORY</option>
+        <option value="home">HOME</option>
+        <option value="garage">GARAGE</option>
+      </select>
+      <select class="my-selector" name="my-selector-location1">
+        <option value="location1">LOCATION1</option>
+        <option value="storages">STORAGES</option>
+      </select>
+      <select class="my-selector" name="my-selector-location2">
+        <option value="location2">LOCATION2</option>
+        <option value="storages">STORAGES</option>
+      </select>
+    </header>
+    <table class="items-displayer-table">
+      <tr> <th>Header 1</th> <th>Header 2</th> <th>Header 3</th> </tr>
+      <tr> <td>Data 1</td> <td>Data 2</td> <td>Data 3</td> </tr>
+      <tr> <td>Data 1</td> <td>Data 2</td> <td>Data 3</td> </tr>
+    </table>
+  </section>
+</main>
 </body>
 </html>

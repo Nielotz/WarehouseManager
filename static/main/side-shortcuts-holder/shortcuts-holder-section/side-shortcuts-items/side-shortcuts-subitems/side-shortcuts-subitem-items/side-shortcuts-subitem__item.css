@@ -1,0 +1,11 @@
+.side-shortcuts-subitem__item{
+    font-family: Garamond, serif;
+    padding: 0 0 0 2em;
+}
+
+.side-shortcuts-subitem__item--selected {
+    background-color: #E7E7E7;
+    border-top: 1px solid #707070;
+    border-bottom: 1px solid #707070;
+}
+

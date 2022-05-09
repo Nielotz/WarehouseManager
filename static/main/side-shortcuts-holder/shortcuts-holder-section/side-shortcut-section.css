@@ -1,0 +1,10 @@
+.side-shortcut-section {
+    width: 100%;
+    margin-top: 25px; /* Keep it a half of the header. */
+
+    border: 1px solid #707070;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}

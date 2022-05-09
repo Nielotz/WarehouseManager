@@ -1,0 +1,16 @@
+.side-shortcuts-subitem__header{
+    display: block;
+
+    padding-left: 2em;
+    padding-top: 0.7em;
+    padding-bottom: 0.7em;
+
+    font-family: Helvetica, serif;
+}
+
+.side-shortcuts-subitem__header--selected {
+    background-color: #E7E7E7;
+    border-top: 1px solid #707070;
+    border-bottom: 1px solid #707070;
+
+}

@@ -1,0 +1,16 @@
+.user-section {
+    width: 15%;
+    height: 100%;
+    display: flex;
+
+    align-items: center;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+
+    border-right: 1px #1111 solid;
+    border-bottom: 1px #1111 solid;
+
+    padding: 0.3em 0.3em 0.3em 1.5em;
+}

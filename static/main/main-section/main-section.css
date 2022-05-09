@@ -1,0 +1,7 @@
+.main-section {
+    /* Offset side-shortcuts section. How to do it better way? */
+    margin-left: 15%;
+
+    padding-left: 15%;
+    padding-right: 15%;
+}
