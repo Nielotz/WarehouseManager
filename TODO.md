@@ -8,7 +8,7 @@
 - :white_large_square: Make select item table variable row width https://www.brainbell.com/javascript/making-resizable-table-js.html
 
 # TODO:
-- :white_checked_mark: Add main-section [3] 2h
+- :white_check_mark: Add main-section [3] 2h
 - :white_large_square: Add item-list to main-section [3]
 ---
 - :white_large_square: Serve frontend using backend [5]
