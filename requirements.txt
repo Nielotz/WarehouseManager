@@ -1,0 +1,2 @@
+psycopg2-binary
+Flask~=2.1.1
