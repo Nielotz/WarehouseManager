@@ -1,6 +1,6 @@
 # WarehouseManager
 
-### Functionality:
+### Target functionality:
 - Organize and store items.
 - Check item utilization history and use that data to predict future.
 - Set auto alarm when have to resupply to keep item above given threshold.
@@ -18,3 +18,9 @@
 
 # Credits: <br>
 [Penguin logo by Johannes Schröter](https://www.pexels.com/photo/cold-snow-nature-bird-5302686/)
+
+
+# Development technicals / notes:
+- Frontend renders data from DB (duh)
+- User selects data (menu at the top of the page)
+- On default no data is rendered
