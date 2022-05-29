@@ -10,20 +10,20 @@
 - ⬜ Login [optional]
   - ⬜ Frontend
     - ⬜ HTML + CSS [5]
-    - ⬜ JS [3]
+    - ⬜ TS [3]
   - ⬜ Backend
     - ⬜ Session [5]
 
 - ⬜ Register [optional]
   - ⬜ Frontend
     - ⬜ HTML + CSS [5]
-    - ⬜ JS [3]
+    - ⬜ TS [3]
 
 - ⬜ List page
   - ⬜ Frontend
     - ⬜ CSS [5]
     - ⬜ Add + buttons [3]
-    - ⬜ JS [5]
+    - ⬜ TS [5]
     - ⬜ Prettify select item with arrow [optional] https://amethystwebsitedesign.com/wp-content/uploads/2014/11/dashicons-arrows-680-w.png
   - ⬜ API
     - ✅ Serve static data
