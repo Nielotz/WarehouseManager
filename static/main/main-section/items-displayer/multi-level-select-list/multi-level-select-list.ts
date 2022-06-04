@@ -11,29 +11,27 @@ class Api {
 }
 
 class MyApi {
-    // static ItemData = class {
-    //     names: Array<string>
-    // }
-
     static Names = class {
         names: Array<string>
     }
 
     static Get = class {
-        static storagesNames() {
-            return Api.get<InstanceType<typeof MyApi.Names>>("api/storages_names")
-                .then(object => object.names)
-        }
+        static Names = class {
+            static storages() {
+                return MyApi.Get.Names.getNames("api/storages_names")
+            }
 
-        static containerNames(storageName: string) {
-            return Api.get<InstanceType<typeof MyApi.Names>>(`api/storage/${storageName}/containers_names`)
-                .then(object => object.names)
-        }
+            static containers(storageName: string) {
+                return MyApi.Get.Names.getNames(`api/storage/${storageName}/containers_names`)
+            }
 
-        static itemNames(storageName: string, containerName: string) {
-            let path: string = `api/storage/${storageName}/container/${containerName}/items_names`
-            return Api.get<InstanceType<typeof MyApi.Names>>(path)
-                .then(object => object.names)
+            static items(storageName: string, containerName: string) {
+                return MyApi.Get.Names.getNames(`api/storage/${storageName}/container/${containerName}/items_names`)
+            }
+
+            private static getNames(path: string) {
+                return Api.get<InstanceType<typeof MyApi.Names>>(path).then(object => object.names)
+            }
         }
 
         // static item(itemID: number) {
@@ -45,12 +43,16 @@ class MyApi {
     }
 }
 
-MyApi.Get.containerNames("TestStorageName").then(storages => {
+MyApi.Get.Names.storages().then(storages => {
     console.log(storages)
 })
 
-MyApi.Get.itemNames("TestStorageName", "TestContainerName").then(storages => {
-    console.log(storages)
+MyApi.Get.Names.containers("TestStorageName").then(containers => {
+    console.log(containers)
+})
+
+MyApi.Get.Names.items("TestStorageName", "TestContainerName").then(items => {
+    console.log(items)
 })
 
 // MyApi.Get.item("TestStorageName", "TestContainerName").then(storages => {
@@ -127,13 +129,13 @@ class MultiLevelSelectListManager {
         }
 
         // Receive all storages from server to ensure chosen one still exists.
-        MyApi.Get.storagesNames()
+        MyApi.Get.Names.storages()
             .then(storageNames => {
                 let selectHeader = document.getElementsByClassName("multi-level-select-list")[0]
                 selectHeader.replaceChildren()
                 callWhenStorageDataArrive(storageNames)
 
-                MyApi.Get.containerNames(MultiLevelSelectListManager.storageSelectedOption)
+                MyApi.Get.Names.containers(MultiLevelSelectListManager.storageSelectedOption)
                     .then(containerNames => {
                         callWhenContainerDataArrive(containerNames)
                     })

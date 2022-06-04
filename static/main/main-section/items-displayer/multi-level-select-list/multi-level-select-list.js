@@ -15,39 +15,45 @@ var Api = /** @class */ (function () {
 var MyApi = /** @class */ (function () {
     function MyApi() {
     }
-    // static ItemData = class {
-    //     names: Array<string>
-    // }
+    var _a;
     MyApi.Names = /** @class */ (function () {
         function class_1() {
         }
         return class_1;
     }());
-    MyApi.Get = /** @class */ (function () {
-        function class_2() {
-        }
-        class_2.storagesNames = function () {
-            return Api.get("api/storages_names")
-                .then(function (object) { return object.names; });
-        };
-        class_2.containerNames = function (storageName) {
-            return Api.get("api/storage/".concat(storageName, "/containers_names"))
-                .then(function (object) { return object.names; });
-        };
-        class_2.itemNames = function (storageName, containerName) {
-            var path = "api/storage/".concat(storageName, "/container/").concat(containerName, "/items_names");
-            return Api.get(path)
-                .then(function (object) { return object.names; });
-        };
-        return class_2;
-    }());
+    MyApi.Get = (_a = /** @class */ (function () {
+            function class_2() {
+            }
+            return class_2;
+        }()),
+        _a.Names = /** @class */ (function () {
+            function class_3() {
+            }
+            class_3.storages = function () {
+                return MyApi.Get.Names.getNames("api/storages_names");
+            };
+            class_3.containers = function (storageName) {
+                return MyApi.Get.Names.getNames("api/storage/".concat(storageName, "/containers_names"));
+            };
+            class_3.items = function (storageName, containerName) {
+                return MyApi.Get.Names.getNames("api/storage/".concat(storageName, "/container/").concat(containerName, "/items_names"));
+            };
+            class_3.getNames = function (path) {
+                return Api.get(path).then(function (object) { return object.names; });
+            };
+            return class_3;
+        }()),
+        _a);
     return MyApi;
 }());
-MyApi.Get.containerNames("TestStorageName").then(function (storages) {
+MyApi.Get.Names.storages().then(function (storages) {
     console.log(storages);
 });
-MyApi.Get.itemNames("TestStorageName", "TestContainerName").then(function (storages) {
-    console.log(storages);
+MyApi.Get.Names.containers("TestStorageName").then(function (containers) {
+    console.log(containers);
+});
+MyApi.Get.Names.items("TestStorageName", "TestContainerName").then(function (items) {
+    console.log(items);
 });
 // MyApi.Get.item("TestStorageName", "TestContainerName").then(storages => {
 //     console.log(storages)
@@ -72,7 +78,7 @@ var MultiLevelSelectListManager = /** @class */ (function () {
     };
     // Overwrite storages section in HTMl.
     MultiLevelSelectListManager.updateStorages = function (storages) {
-        if (MultiLevelSelectListManager.storageSelectedOption == null)
+        if (MultiLevelSelectListManager.storageSelectedOption == null && storages.length)
             MultiLevelSelectListManager.storageSelectedOption = storages[0];
         var selectElementCode = MultiLevelSelectListManager.createSelectElementCode("my-selector-storage", storages, MultiLevelSelectListManager.storageSelectedOption, "MultiLevelSelectListManager.update(value, null)");
         var header = document.getElementsByClassName("multi-level-select-list")[0];
@@ -80,7 +86,7 @@ var MultiLevelSelectListManager = /** @class */ (function () {
     };
     // Overwrite containers section in HTMl.
     MultiLevelSelectListManager.updateContainers = function (containers) {
-        if (MultiLevelSelectListManager.containerSelectedOption == null)
+        if (MultiLevelSelectListManager.containerSelectedOption == null && containers.length)
             MultiLevelSelectListManager.containerSelectedOption = containers[0];
         var selectElementCode = MultiLevelSelectListManager.createSelectElementCode("my-selector-container", containers, MultiLevelSelectListManager.containerSelectedOption, "MultiLevelSelectListManager.update(null, value)");
         var header = document.getElementsByClassName("multi-level-select-list")[0];
@@ -105,12 +111,12 @@ var MultiLevelSelectListManager = /** @class */ (function () {
             MultiLevelSelectListManager.updateContainers(containerNames);
         };
         // Receive all storages from server to ensure chosen one still exists.
-        MyApi.Get.storagesNames()
+        MyApi.Get.Names.storages()
             .then(function (storageNames) {
             var selectHeader = document.getElementsByClassName("multi-level-select-list")[0];
             selectHeader.replaceChildren();
             callWhenStorageDataArrive(storageNames);
-            MyApi.Get.containerNames(MultiLevelSelectListManager.storageSelectedOption)
+            MyApi.Get.Names.containers(MultiLevelSelectListManager.storageSelectedOption)
                 .then(function (containerNames) {
                 callWhenContainerDataArrive(containerNames);
             });
