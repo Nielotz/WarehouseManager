@@ -28,7 +28,7 @@ Entry format ({} - optional): {⬜/✅} Change [estimate] {comments}
   - ⬜ Fetch data using API call
   - ⬜ Display received data 
   - ⬜ API GET calls return data from DB
-
+- ✅ Move database creation to backend
 ## 0.0.0 - 2022-05-29
 ### Added
 - This changelog
