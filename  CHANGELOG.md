@@ -23,7 +23,6 @@ Where type is in { FEATURE, API, FRONTEND, BACKEND }
 ## Planned 0.2.0 - 2022-06-06 - "We need to gain control"
 
 ### Added
-
 - ⬜ [API] Support for addition / deletion of data (POST, DELETE) (Storage, Container, Item)
 - ⬜ [FRONTEND] Support for addition / deletion of data (API call) (Storage, Container, Item)
     - ⬜ [FRONTEND] Support for adding data entry (Storage, Container, Item)
@@ -42,6 +41,7 @@ Where type is in { FEATURE, API, FRONTEND, BACKEND }
     - ⬜ [FRONTEND] Display received Items in table on the main page
     - ⬜ [BACKEND] API GET calls return data from DB (Storage, Container, Item)
         - ⬜ [BACKEND] Connect to DB
+- ✅ Move database creation to backend
 
 ## 0.0.0 - 2022-05-29
 
