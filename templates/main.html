@@ -35,8 +35,9 @@
   <link rel="stylesheet" type="text/css"
         href="../static/main/main-section/items-displayer/item-data-table/item-data-table.css">
 
+  <script src="../static/main/main-section/items-displayer/multi-level-select-list/multi-level-select-list.js"></script>
 </head>
-<body>
+<body onload="MultiLevelSelectListManager.update()">
 <header>
   <!-- How to name it? It is logo + username (probably a button to open user settings) placed in top corner. -->
   <div class="user-section">
@@ -52,7 +53,7 @@
 <main class="main-section">
   <section class="items-displayer">
     <header class="multi-level-select-list">
-      {%- include "multi-level-select-list.html"  %}
+      <!-- JS inserts here options received over REST API. -->
     </header>
     {%- include "item-data-table.html" %}
   </section>
