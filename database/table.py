@@ -23,6 +23,7 @@ class Item(db.Model):
 
 
 class ItemHistory(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     item_id = db.Column(db.Integer, db.ForeignKey("item.id"), nullable=False)
     amount = db.Column(db.Integer)
     # amount_unit = db.Column(db.Int,  REFERENCES amount_unit,
