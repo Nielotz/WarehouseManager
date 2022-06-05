@@ -1,3 +1,18 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var Api = /** @class */ (function () {
     function Api() {
     }
@@ -15,114 +30,135 @@ var Api = /** @class */ (function () {
 var MyApi = /** @class */ (function () {
     function MyApi() {
     }
-    var _a;
-    MyApi.Names = /** @class */ (function () {
+    MyApi.Thing = /** @class */ (function () {
         function class_1() {
         }
         return class_1;
     }());
-    MyApi.Get = (_a = /** @class */ (function () {
-            function class_2() {
-            }
-            return class_2;
-        }()),
-        _a.Names = /** @class */ (function () {
-            function class_3() {
-            }
-            class_3.storages = function () {
-                return MyApi.Get.Names.getNames("api/storages_names");
-            };
-            class_3.containers = function (storageName) {
-                return MyApi.Get.Names.getNames("api/storage/".concat(storageName, "/containers_names"));
-            };
-            class_3.items = function (storageName, containerName) {
-                return MyApi.Get.Names.getNames("api/storage/".concat(storageName, "/container/").concat(containerName, "/items_names"));
-            };
-            class_3.getNames = function (path) {
-                return Api.get(path).then(function (object) { return object.names; });
-            };
-            return class_3;
-        }()),
-        _a);
+    MyApi.Storage = /** @class */ (function (_super) {
+        __extends(class_2, _super);
+        function class_2() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        return class_2;
+    }(MyApi.Thing));
+    MyApi.Container = /** @class */ (function (_super) {
+        __extends(class_3, _super);
+        function class_3() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        return class_3;
+    }(MyApi.Thing));
+    MyApi.Get = /** @class */ (function () {
+        function class_4() {
+        }
+        class_4.storages = function () {
+            return MyApi.Get.ask_for("api/storages");
+        };
+        class_4.containers = function (storageId) {
+            return MyApi.Get.ask_for("api/storages/".concat(storageId, "/containers"));
+        };
+        class_4.items = function (storageId, containerId) {
+            return MyApi.Get.ask_for("api/storages/".concat(storageId, "/containers/").concat(containerId, "/items"));
+        };
+        class_4.ask_for = function (path) {
+            return Api.get(path);
+        };
+        return class_4;
+    }());
     return MyApi;
 }());
-MyApi.Get.Names.storages().then(function (storages) {
-    console.log(storages);
-});
-MyApi.Get.Names.containers("TestStorageName").then(function (containers) {
-    console.log(containers);
-});
-MyApi.Get.Names.items("TestStorageName", "TestContainerName").then(function (items) {
-    console.log(items);
-});
-// MyApi.Get.item("TestStorageName", "TestContainerName").then(storages => {
-//     console.log(storages)
-// })
 var MultiLevelSelectListManager = /** @class */ (function () {
     function MultiLevelSelectListManager() {
     }
     // In case null in selectedOption - select first one.
-    MultiLevelSelectListManager.createSelectElementCode = function (name, options, selectedOption, onChange) {
-        if (selectedOption === void 0) { selectedOption = null; }
-        var opening = "<label for=\"".concat(name, "\"></label>\n") +
-            "<select id=\"".concat(name, "\" name=\"").concat(name, "\" ") +
+    MultiLevelSelectListManager.generateSelectElementHtml = function (htmlElementIdName, selected, optionsIdName, onChange) {
+        var openingHtml = "<label for=\"".concat(htmlElementIdName, "\"></label>\n") +
+            "<select id=\"".concat(htmlElementIdName, "\" name=\"").concat(htmlElementIdName, "\" ") +
             "class=\"my-selector\" onchange=\"".concat(onChange, "\">");
-        var options_ = options.map(function (option) {
-            if (selectedOption == option)
-                return "  <option value=\"".concat(option, "\" selected>").concat(option.toUpperCase(), "</option>");
+        var optionsHtml = optionsIdName.map(function (option) {
+            if (selected !== null && selected.id === option.id)
+                return "  <option value=".concat(option.id, " selected>").concat(option.name.toUpperCase(), "</option>");
             else
-                return "  <option value=\"".concat(option, "\">").concat(option.toUpperCase(), "</option>");
+                return "  <option value=".concat(option.id, ">").concat(option.name.toUpperCase(), "</option>");
         });
-        var closing = '</select>';
-        return opening + "\n" + options_.join("\n") + "\n" + closing + "\n";
+        var closingHtml = '</select>';
+        return openingHtml + "\n" + optionsHtml.join("\n") + "\n" + closingHtml + "\n";
     };
     // Overwrite storages section in HTMl.
-    MultiLevelSelectListManager.updateStorages = function (storages) {
-        if (MultiLevelSelectListManager.storageSelectedOption == null && storages.length)
-            MultiLevelSelectListManager.storageSelectedOption = storages[0];
-        var selectElementCode = MultiLevelSelectListManager.createSelectElementCode("my-selector-storage", storages, MultiLevelSelectListManager.storageSelectedOption, "MultiLevelSelectListManager.update(value, null)");
+    MultiLevelSelectListManager.updateStorages = function (storages, selected) {
+        if (selected === void 0) { selected = null; }
+        if (selected === null && storages.length)
+            selected = storages[0];
+        var selectElementCode = MultiLevelSelectListManager.generateSelectElementHtml("my-selector-storage", selected, storages, "MultiLevelSelectListManager.update(value, null)");
         var header = document.getElementsByClassName("multi-level-select-list")[0];
         header.insertAdjacentHTML("beforeend", selectElementCode);
     };
     // Overwrite containers section in HTMl.
-    MultiLevelSelectListManager.updateContainers = function (containers) {
-        if (MultiLevelSelectListManager.containerSelectedOption == null && containers.length)
-            MultiLevelSelectListManager.containerSelectedOption = containers[0];
-        var selectElementCode = MultiLevelSelectListManager.createSelectElementCode("my-selector-container", containers, MultiLevelSelectListManager.containerSelectedOption, "MultiLevelSelectListManager.update(null, value)");
+    MultiLevelSelectListManager.updateContainers = function (containers, selected) {
+        if (selected === void 0) { selected = null; }
+        if (selected === null && containers.length)
+            selected = containers[0];
+        var selectElementCode = MultiLevelSelectListManager.generateSelectElementHtml("my-selector-container", selected, containers, "MultiLevelSelectListManager.update(this.parentElement.querySelector('#my-selector-storage').value, value)");
         var header = document.getElementsByClassName("multi-level-select-list")[0];
         header.insertAdjacentHTML("beforeend", selectElementCode);
     };
-    MultiLevelSelectListManager.update = function (storageNewOption, containerNewOption) {
-        if (storageNewOption === void 0) { storageNewOption = null; }
-        if (containerNewOption === void 0) { containerNewOption = null; }
-        var callWhenStorageDataArrive = function (storageNames) {
-            // Update storage value to received one (it may be null).
-            if (storageNewOption != null)
-                MultiLevelSelectListManager.storageSelectedOption = storageNewOption;
-            // Update container value to received one (it may be null).
-            MultiLevelSelectListManager.containerSelectedOption = containerNewOption;
+    // Update MultiLevelSelectList (modifies HTML).
+    MultiLevelSelectListManager.update = function (selectedStorageId, selectedContainerId) {
+        if (selectedStorageId === void 0) { selectedStorageId = null; }
+        if (selectedContainerId === void 0) { selectedContainerId = null; }
+        if (selectedStorageId !== null)
+            selectedStorageId = Number(selectedStorageId);
+        if (selectedContainerId !== null)
+            selectedContainerId = Number(selectedContainerId);
+        var callWhenStorageDataArrive = function (storages) {
+            var selectedStorage = null;
+            if (selectedStorageId !== null) {
+                var selectedStorage_ = storages.filter(function (storage) { return storage.id === selectedStorageId; });
+                if (selectedStorage_.length) {
+                    selectedStorage = selectedStorage_[0];
+                }
+                else {
+                    // TODO: Error handling: selected option does not exists in database.
+                    alert("Selected storage_id(".concat(selectedStorageId, ") does not exists in db."));
+                }
+            }
+            else if (storages.length) {
+                selectedStorage = storages[0];
+            }
             // Update storage list - HTML, cached values.
-            MultiLevelSelectListManager.updateStorages(storageNames);
+            MultiLevelSelectListManager.updateStorages(storages, selectedStorage);
+            return selectedStorage;
         };
-        var callWhenContainerDataArrive = function (containerNames) {
-            // Update storage value to received one (it may be null).
-            MultiLevelSelectListManager.containerSelectedOption = containerNewOption;
+        var callWhenContainerDataArrive = function (containers) {
             // Update container list - HTML, cached values.
-            MultiLevelSelectListManager.updateContainers(containerNames);
+            var selectedContainer = null;
+            if (selectedContainerId !== null) {
+                var selectedContainer_ = containers.filter(function (container) { return container.id === selectedContainerId; });
+                if (selectedContainer_.length) {
+                    selectedContainer = selectedContainer_[0];
+                }
+                else {
+                    // TODO: Error handling: selected option does not exists in database.
+                    alert("Selected container_id(".concat(selectedContainerId, ") does not exists in db."));
+                }
+            }
+            else if (containers.length) {
+                selectedContainer = containers[0];
+            }
+            MultiLevelSelectListManager.updateContainers(containers, selectedContainer);
         };
         // Receive all storages from server to ensure chosen one still exists.
-        MyApi.Get.Names.storages()
-            .then(function (storageNames) {
+        MyApi.Get.storages()
+            .then(function (storages) {
             var selectHeader = document.getElementsByClassName("multi-level-select-list")[0];
             selectHeader.replaceChildren();
-            callWhenStorageDataArrive(storageNames);
-            MyApi.Get.Names.containers(MultiLevelSelectListManager.storageSelectedOption)
-                .then(function (containerNames) {
-                callWhenContainerDataArrive(containerNames);
+            var selectedStorage = callWhenStorageDataArrive(storages);
+            MyApi.Get.containers(selectedStorage.id)
+                .then(function (containers) {
+                callWhenContainerDataArrive(containers);
             });
         });
     };
-    MultiLevelSelectListManager.storageSelectedOption = null;
-    MultiLevelSelectListManager.containerSelectedOption = null;
     return MultiLevelSelectListManager;
 }());

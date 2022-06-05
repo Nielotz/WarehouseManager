@@ -11,133 +11,143 @@ class Api {
 }
 
 class MyApi {
-    static Names = class {
-        names: Array<string>
+    static Thing = class {
+        id: number
+        name: string
+    }
+
+    static Storage = class extends MyApi.Thing {
+    }
+
+    static Container = class extends MyApi.Thing {
     }
 
     static Get = class {
-        static Names = class {
-            static storages() {
-                return MyApi.Get.Names.getNames("api/storages_names")
-            }
-
-            static containers(storageName: string) {
-                return MyApi.Get.Names.getNames(`api/storage/${storageName}/containers_names`)
-            }
-
-            static items(storageName: string, containerName: string) {
-                return MyApi.Get.Names.getNames(`api/storage/${storageName}/container/${containerName}/items_names`)
-            }
-
-            private static getNames(path: string) {
-                return Api.get<InstanceType<typeof MyApi.Names>>(path).then(object => object.names)
-            }
+        static storages() {
+            return MyApi.Get.ask_for("api/storages")
         }
 
-        // static item(itemID: number) {
-        //     let path: string = `api/item/${itemID}`
-        //     return Api.get<InstanceType<typeof MyApi.ItemData>>(path)
-        //         .then(object => object.names)
-        // }
+        static containers(storageId: number) {
+            return MyApi.Get.ask_for(`api/storages/${storageId}/containers`)
+        }
 
+        static items(storageId: number, containerId: number) {
+            return MyApi.Get.ask_for(`api/storages/${storageId}/containers/${containerId}/items`)
+        }
+
+        private static ask_for(path: string) {
+            return Api.get<InstanceType<typeof MyApi.Thing>>(path)
+        }
     }
 }
 
-MyApi.Get.Names.storages().then(storages => {
-    console.log(storages)
-})
 
-MyApi.Get.Names.containers("TestStorageName").then(containers => {
-    console.log(containers)
-})
-
-MyApi.Get.Names.items("TestStorageName", "TestContainerName").then(items => {
-    console.log(items)
-})
-
-// MyApi.Get.item("TestStorageName", "TestContainerName").then(storages => {
-//     console.log(storages)
-// })
-
-class MultiLevelSelectListManager {
-    private static storageSelectedOption: string = null
-    private static containerSelectedOption: string = null
+abstract class MultiLevelSelectListManager {
+    static Storages: Array<InstanceType<typeof MyApi.Storage>>
 
     // In case null in selectedOption - select first one.
-    private static createSelectElementCode(name: string, options: Array<string>,
-                                           selectedOption: string = null, onChange: string) {
-        let opening = `<label for="${name}"></label>\n` +
-            `<select id="${name}" name="${name}" ` +
+    private static generateSelectElementHtml(htmlElementIdName: string, selected: InstanceType<typeof MyApi.Thing>,
+                                             optionsIdName: Array<{ id: number, name: string }>, onChange: string) {
+        let openingHtml = `<label for="${htmlElementIdName}"></label>\n` +
+            `<select id="${htmlElementIdName}" name="${htmlElementIdName}" ` +
             `class="my-selector" onchange="${onChange}">`
 
-        let options_ = options.map(option => {
-            if (selectedOption == option)
-                return `  <option value="${option}" selected>${option.toUpperCase()}</option>`
+        let optionsHtml = optionsIdName.map(option => {
+            if (selected !== null && selected.id === option.id)
+                return `  <option value=${option.id} selected>${option.name.toUpperCase()}</option>`
             else
-                return `  <option value="${option}">${option.toUpperCase()}</option>`
+                return `  <option value=${option.id}>${option.name.toUpperCase()}</option>`
         })
-        let closing = '</select>'
+        let closingHtml = '</select>'
 
-        return opening + "\n" + options_.join("\n") + "\n" + closing + "\n"
+        return openingHtml + "\n" + optionsHtml.join("\n") + "\n" + closingHtml + "\n"
     }
 
     // Overwrite storages section in HTMl.
-    private static updateStorages(storages: Array<string>) {
-        if (MultiLevelSelectListManager.storageSelectedOption == null && storages.length)
-            MultiLevelSelectListManager.storageSelectedOption = storages[0]
+    private static updateStorages(storages: Array<InstanceType<typeof MyApi.Storage>>,
+                                  selected: InstanceType<typeof MyApi.Storage> = null) {
+        if (selected === null && storages.length)
+            selected = storages[0]
         let selectElementCode: string =
-            MultiLevelSelectListManager.createSelectElementCode("my-selector-storage",
+            MultiLevelSelectListManager.generateSelectElementHtml("my-selector-storage",
+                selected,
                 storages,
-                MultiLevelSelectListManager.storageSelectedOption,
                 "MultiLevelSelectListManager.update(value, null)")
         let header = document.getElementsByClassName("multi-level-select-list")[0]
         header.insertAdjacentHTML("beforeend", selectElementCode)
     }
 
     // Overwrite containers section in HTMl.
-    private static updateContainers(containers: Array<string>) {
-        if (MultiLevelSelectListManager.containerSelectedOption == null && containers.length)
-            MultiLevelSelectListManager.containerSelectedOption = containers[0]
+    private static updateContainers(containers: Array<InstanceType<typeof MyApi.Container>>,
+                                    selected: InstanceType<typeof MyApi.Container> = null) {
+        if (selected === null && containers.length)
+            selected = containers[0]
+
         let selectElementCode: string =
-            MultiLevelSelectListManager.createSelectElementCode("my-selector-container",
+            MultiLevelSelectListManager.generateSelectElementHtml("my-selector-container",
+                selected,
                 containers,
-                MultiLevelSelectListManager.containerSelectedOption,
-                "MultiLevelSelectListManager.update(null, value)")
+                "MultiLevelSelectListManager.update(this.parentElement.querySelector('#my-selector-storage').value, value)")
         let header = document.getElementsByClassName("multi-level-select-list")[0]
         header.insertAdjacentHTML("beforeend", selectElementCode)
     }
 
-    static update(storageNewOption: string = null, containerNewOption: string = null) {
-        let callWhenStorageDataArrive = (storageNames) => {
-            // Update storage value to received one (it may be null).
-            if (storageNewOption != null)
-                MultiLevelSelectListManager.storageSelectedOption = storageNewOption
+    // Update MultiLevelSelectList (modifies HTML).
+    static update(selectedStorageId: number = null, selectedContainerId: number = null) {
+        if (selectedStorageId !== null)
+            selectedStorageId = Number(selectedStorageId)
+        if (selectedContainerId !== null)
+            selectedContainerId = Number(selectedContainerId)
 
-            // Update container value to received one (it may be null).
-            MultiLevelSelectListManager.containerSelectedOption = containerNewOption
+        let callWhenStorageDataArrive = (storages) => {
+            let selectedStorage: InstanceType<typeof MyApi.Storage> = null
+
+            if (selectedStorageId !== null) {
+                let selectedStorage_ = storages.filter(storage => storage.id === selectedStorageId)
+                if (selectedStorage_.length) {
+                    selectedStorage = selectedStorage_[0]
+                } else {
+                    // TODO: Error handling: selected option does not exists in database.
+                    alert(`Selected storage_id(${selectedStorageId}) does not exists in db.`)
+                }
+            } else if (storages.length) {
+                selectedStorage = storages[0]
+            }
 
             // Update storage list - HTML, cached values.
-            MultiLevelSelectListManager.updateStorages(storageNames)
+            MultiLevelSelectListManager.updateStorages(storages, selectedStorage)
+
+            return selectedStorage
         }
 
-        let callWhenContainerDataArrive = (containerNames) => {
-            // Update storage value to received one (it may be null).
-            MultiLevelSelectListManager.containerSelectedOption = containerNewOption
-
+        let callWhenContainerDataArrive = (containers) => {
             // Update container list - HTML, cached values.
-            MultiLevelSelectListManager.updateContainers(containerNames)
+            let selectedContainer: InstanceType<typeof MyApi.Container> = null
+            if (selectedContainerId !== null) {
+                let selectedContainer_ = containers.filter(container => container.id === selectedContainerId)
+                if (selectedContainer_.length) {
+                    selectedContainer = selectedContainer_[0]
+                } else {
+                    // TODO: Error handling: selected option does not exists in database.
+                    alert(`Selected container_id(${selectedContainerId}) does not exists in db.`)
+                }
+            } else if (containers.length) {
+                selectedContainer = containers[0]
+            }
+
+            MultiLevelSelectListManager.updateContainers(containers, selectedContainer)
         }
 
         // Receive all storages from server to ensure chosen one still exists.
-        MyApi.Get.Names.storages()
-            .then(storageNames => {
+        MyApi.Get.storages()
+            .then(storages => {
                 let selectHeader = document.getElementsByClassName("multi-level-select-list")[0]
                 selectHeader.replaceChildren()
-                callWhenStorageDataArrive(storageNames)
+                let selectedStorage = callWhenStorageDataArrive(storages)
 
-                MyApi.Get.Names.containers(MultiLevelSelectListManager.storageSelectedOption)
-                    .then(containerNames => {
-                        callWhenContainerDataArrive(containerNames)
+                MyApi.Get.containers(selectedStorage.id)
+                    .then(containers => {
+                        callWhenContainerDataArrive(containers)
                     })
 
             })
