@@ -12,6 +12,9 @@ class Storage(db.Model):
     def __repr__(self):
         return f"<{type(self).__name__}: id={self.id}, name={self.name}>"
 
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
 
 class Container(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
@@ -23,6 +26,9 @@ class Container(db.Model):
     def __repr__(self):
         return f"<{type(self).__name__}: id={self.id}, name={self.name}, storage_id={self.storage_id}>"
 
+    def to_dict(self):
+        return {"id": self.id, "name": self.name, "storage_id": self.storage_id}
+
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
@@ -31,6 +37,9 @@ class Item(db.Model):
 
     def __repr__(self):
         return f"<{type(self).__name__}: id={self.id}, name={self.name}, barcode={self.barcode}>"
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name, "barcode": self.barcode}
 
 
 class ItemHistory(db.Model):
@@ -47,3 +56,6 @@ class ItemHistory(db.Model):
     def __repr__(self):
         return f"<{type(self).__name__}: " \
                f"id={self.id}, item_id={self.item_id}, amount={self.amount}, changed={self.changed}>"
+
+    def to_dict(self):
+        return {"id": self.id, "item_id": self.item_id, "amount": self.amount, "changed": self.changed}
