@@ -13,35 +13,51 @@ Where type is in { FEATURE, API, FRONTEND, BACKEND }
 
 ### Added
 
-- [FEATURE] Swagger [5]
 - [FEATURE] Loging in + keeping session [8]
 - [FEATURE] Signing in [3]
-- [FRONTEND] Improve CSS of the main page 1/2 [8] Prettify select item with
+- [~~FRONTEND~~] Improve CSS of the main page 1/2 [8] Prettify select item with
   arrow https://amethystwebsitedesign.com/wp-content/uploads/2014/11/dashicons-arrows-680-w.png
-- [FRONTEND] Add "+" buttons [3]
+- [~~FRONTEND~~] Add "+" buttons [3]
+- alerts
+
+## Planned 0.3.0 - 2022-06-14 - "Deadline... It... It's coming for us..."
+
+### Added
+
+- [FEATURE] Redis [5]
 
 ## Planned 0.2.0 - 2022-06-06 - "We need to gain control"
 
 ### Added
-- ⬜ [API] Support for addition / deletion of data (POST, DELETE) (Storage, Container, Item)
-- ⬜ [FRONTEND] Support for addition / deletion of data (API call) (Storage, Container, Item)
-    - ⬜ [FRONTEND] Support for adding data entry (Storage, Container, Item)
-    - ⬜ [FRONTEND] Support for deleting data entry (Storage, Container, Item)
 
-## Unreleased 0.1.0 - 2022-05-30 - "Just open eyes"
+- [FEATURE] Swagger [5]
+
+## Unreleased 0.1.0 - 2022-05-30 - "~~Just open eyes~~" "Just open heart"
+
+### Changed
+
+- Frontend have defeated me again :c Sooo it will be postponed to no-one-know-when
 
 ### Added
 
-- ✅ [FEATURE] Support for selecting storages / containers - MultiLevelSelectList
-    - ✅ [FRONTEND] Fetch storages and containers names
-    - ✅ [FRONTEND] Display and allow selection of given storage / container
-- ⬜ [FEATURE] Support for displaying items
-    - ⬜ [API] New endpoint "/api/storage/\<storage>/container/\<container>/items"
-    - ⬜ [FRONTEND] Fetch Items using API call
-    - ⬜ [FRONTEND] Display received Items in table on the main page
-    - ⬜ [BACKEND] API GET calls return data from DB (Storage, Container, Item)
-        - ⬜ [BACKEND] Connect to DB
-- ✅ Move database creation to backend
+- ⬜ [API] New endpoints:
+    - ⬜ /api/users/<user_id>
+    - ⬜ /api/users/<user_id>/storages
+
+    - ⬜ /api/storages/<storage_id>
+    - ⬜ /api/storages/<storage_id>containers
+    - ⬜ /api/storages/<storage_id>containers/<container_id>
+    - ⬜ /api/storages/<storage_id>/items_history
+    - ⬜ /api/storages/<storage_id>containers/<container_id>/items_history
+
+    - ⬜ /api/items/<item_id>
+    - ⬜ /api/amount_units/<unit_id>
+    - ⬜ /api/shops/<shop_id>
+
+- :x: [~~FEATURE~~] Support for displaying items
+    - [~~FRONTEND~~] Fetch Items using API call
+    - [~~FRONTEND~~] Display received Items in table on the main page
+- ✅ Move database creation to backend (partially)
 
 ## 0.0.0 - 2022-05-29
 
