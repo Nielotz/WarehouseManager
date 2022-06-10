@@ -41,9 +41,7 @@ Where type is in { FEATURE, API, FRONTEND, BACKEND }
 ### Added
 
 - ⬜ [API] New endpoints:
-    - ⬜ /api/users/<user_id>
-    - ⬜ /api/users/<user_id>/storages
-
+    - ⬜ /api/storages
     - ⬜ /api/storages/<storage_id>
     - ⬜ /api/storages/<storage_id>containers
     - ⬜ /api/storages/<storage_id>containers/<container_id>
