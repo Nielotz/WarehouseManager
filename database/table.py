@@ -10,7 +10,7 @@ class Storage(db.Model):
     # user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     def __repr__(self):
-        return f"<{type(self).__name__}: {self.to_dict}"
+        return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
         return {"id": self.id, "name": self.name}
@@ -24,7 +24,7 @@ class Container(db.Model):
     # created_by = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     def __repr__(self):
-        return f"<{type(self).__name__}: {self.to_dict}"
+        return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
         return {"id": self.id, "name": self.name, "storage_id": self.storage_id}
@@ -36,7 +36,7 @@ class Item(db.Model):
     barcode = db.Column(db.Text)
 
     def __repr__(self):
-        return f"<{type(self).__name__}: {self.to_dict}"
+        return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
         return {"id": self.id, "name": self.name, "barcode": self.barcode}
@@ -55,7 +55,7 @@ class ItemHistory(db.Model):
     # changed_by = db.Column(db.Integer,  REFERENCES userdata(user_id)
 
     def __repr__(self):
-        return f"<{type(self).__name__}: {self.to_dict}"
+        return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
         return {"id": self.id, "item_id": self.item_id, "amount": self.amount, "changed": self.changed}
