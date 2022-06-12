@@ -20,7 +20,7 @@ Where type is in { FEATURE, API, FRONTEND, BACKEND }
 - [~~FRONTEND~~] Add "+" buttons [3]
 - alerts
 
-## Planned 0.3.0 - 2022-06-13 - "Deadline... It... It's coming for us..."
+## Planned 0.2.0 - 2022-06-13 - "Deadline... It... It's coming for us..."
 
 ### Added
 
