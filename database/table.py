@@ -1,25 +1,30 @@
 from datetime import datetime
 
+from safrs import SAFRSBase, SAFRSAPI
+
 from . import db
 
 
-class Storage(db.Model):
+class Storage(SAFRSBase, db.Model):
+    __tablename__ = "storages"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    name = db.Column(db.Text, default='DefaultColumnName')
+    name = db.Column(db.Text, default='DefaultStorageName')
 
-    # user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    supports_includes = False
+    # user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
     def __repr__(self):
         return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name}
+        return {"name": self.name}
 
 
-class Container(db.Model):
+class Container(SAFRSBase, db.Model):
+    __tablename__ = "containers"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     name = db.Column(db.Text, default='DefaultContainerName')
-    storage_id = db.Column(db.Integer, db.ForeignKey("storage.id"), nullable=False)
+    storage_id = db.Column(db.Integer, db.ForeignKey("storages.id"), nullable=False)
 
     # created_by = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
@@ -27,10 +32,11 @@ class Container(db.Model):
         return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "storage_id": self.storage_id}
+        return {"name": self.name, "storage_id": self.storage_id}
 
 
-class Item(db.Model):
+class Item(SAFRSBase, db.Model):
+    __tablename__ = "items"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     name = db.Column(db.Text, default='DefaultColumnName')
     barcode = db.Column(db.Text)
@@ -39,17 +45,18 @@ class Item(db.Model):
         return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "barcode": self.barcode}
+        return {"name": self.name, "barcode": self.barcode}
 
 
-class ItemHistory(db.Model):
+class ItemHistory(SAFRSBase, db.Model):
+    __tablename__ = "items_history"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    item_id = db.Column(db.Integer, db.ForeignKey("item.id"), nullable=False)
-    container_id = db.Column(db.Integer, db.ForeignKey("container.id"))
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"), nullable=False)
+    container_id = db.Column(db.Integer, db.ForeignKey("containers.id"))
     amount = db.Column(db.Integer)
-    amount_unit = db.Column(db.Integer, db.ForeignKey("amount_unit.id"))
+    amount_unit = db.Column(db.Integer, db.ForeignKey("amount_units.id"))
     changed = db.Column(db.DateTime, default=datetime.now().isoformat())
-    shop_id = db.Column(db.Integer, db.ForeignKey("shop.id"))
+    shop_id = db.Column(db.Integer, db.ForeignKey("shops.id"))
 
     # prize = db.Column(db.Integer,  -- Stores prize * 100 to avoid float point inaccuracy.
     # changed_by = db.Column(db.Integer,  REFERENCES userdata(user_id)
@@ -58,22 +65,25 @@ class ItemHistory(db.Model):
         return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
-        return {"id": self.id, "item_id": self.item_id, "amount": self.amount, "changed": self.changed}
+        return {"item_id": self.item_id, "amount": self.amount, "changed": self.changed}
 
 
-class AmountUnit(db.Model):
+class AmountUnit(SAFRSBase, db.Model):
+    __tablename__ = "amount_units"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     name = db.Column(db.Text)
     symbol = db.Column(db.Text)
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "symbol": self.symbol}
+        return {"name": self.name, "symbol": self.symbol}
 
 
-class Shop(db.Model):
+class Shop(SAFRSBase, db.Model):
+    __tablename__ = "shops"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     name = db.Column(db.Text)
     location = db.Column(db.Text)
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "symbol": self.symbol}
+        return {"name": self.name, "symbol": self.symbol}
+

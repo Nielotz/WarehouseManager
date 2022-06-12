@@ -2,3 +2,4 @@ psycopg2-binary
 Flask~=2.1.1
 SQLAlchemy~=1.4.36
 bleach~=5.0.0
+safrs~=2.12.2
