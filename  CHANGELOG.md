@@ -40,17 +40,14 @@ Where type is in { FEATURE, API, FRONTEND, BACKEND }
 
 ### Added
 
-- ⬜ [API] New endpoints:
-    - ⬜ /api/storages
-    - ⬜ /api/storages/<storage_id>
-    - ⬜ /api/storages/<storage_id>containers
-    - ⬜ /api/storages/<storage_id>containers/<container_id>
-    - ⬜ /api/storages/<storage_id>/items_history
-    - ⬜ /api/storages/<storage_id>containers/<container_id>/items_history
+- ✅ [API] New GET endpoints:
+    - ✅ /api/storages
+    - ✅ /api/storages/<storage_id>containers
+    - ✅ /api/storages/<storage_id>/containers/<container_id>/items_history
 
-    - ⬜ /api/items/<item_id>
-    - ⬜ /api/amount_units/<unit_id>
-    - ⬜ /api/shops/<shop_id>
+    - ✅ /api/items
+    - ✅ /api/amount_units
+    - ✅ /api/shops
 
 - :x: [~~FEATURE~~] Support for displaying items
     - [~~FRONTEND~~] Fetch Items using API call
