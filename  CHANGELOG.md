@@ -26,33 +26,21 @@ Where type is in { FEATURE, API, FRONTEND, BACKEND }
 
 - [FEATURE] Redis [5]
 
-## Planned 0.2.0 - 2022-06-06 - "We need to gain control"
-
-### Added
-
-- [FEATURE] Swagger [5]
-
-## Unreleased 0.1.0 - 2022-05-30 - "~~Just open eyes~~" "Just open heart"
+## 0.1.0 - 2022-06-12 - "~~Just open eyes~~" "Just open heart"
 
 ### Changed
 
 - Frontend have defeated me again :c Sooo it will be postponed to no-one-know-when
 
 ### Added
+- [FEATURE] Swagger [5]
 
-- ✅ [API] New GET endpoints:
-    - ✅ /api/storages
-    - ✅ /api/storages/<storage_id>containers
-    - ✅ /api/storages/<storage_id>/containers/<container_id>/items_history
+- [API] CRUD for storages, containers, items_history, items, amount_units, shops
 
-    - ✅ /api/items
-    - ✅ /api/amount_units
-    - ✅ /api/shops
-
-- :x: [~~FEATURE~~] Support for displaying items
-    - [~~FRONTEND~~] Fetch Items using API call
-    - [~~FRONTEND~~] Display received Items in table on the main page
-- ✅ Move database creation to backend (partially)
+-  ~~[FEATURE] Support for displaying items~~
+    - ~~[~~FRONTEND~~] Fetch Items using API call~~
+    - ~~[~~FRONTEND~~] Display received Items in table on the main page~~
+- Move database creation to backend (partially)
 
 ## 0.0.0 - 2022-05-29
 
