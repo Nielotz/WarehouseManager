@@ -1,9 +1,12 @@
+from time import sleep
+
 import bleach
 from flask import Flask, jsonify
 from safrs import SAFRSAPI
 
 import database
 from database import table
+from database import notable
 
 app = Flask(__name__)
 
@@ -103,9 +106,15 @@ def create_api(app, host="localhost", port=5000, prefix=""):
     with app.app_context():
         api = SAFRSAPI(app, host=host, port=port, prefix=prefix)
         dt = database.table
-        for dt_type in (dt.Storage, dt.Container, dt.Item, dt.Shop, dt.ItemHistory, dt.AmountUnit):
+        for dt_type in (dt.Storage, dt.Container, dt.Item, dt.Shop, dt.ItemHistory, dt.AmountUnit, notable.AllItemChanges):
             api.expose_object(dt_type)
         print(f"Starting API: http://{host}:{port}/{prefix}")
 
 
 create_api(app, prefix="/api")
+
+from database import api
+with app.app_context():
+    database.recreate()
+    api.fill_with_sample_data()
+    api.get_all_item_changes(1, 1)
