@@ -1,4 +1,17 @@
-from . import table
+from contextlib import contextmanager
+
+from sqlalchemy.orm import sessionmaker
+
+from . import table, db
+
+
+@contextmanager
+def session(*args):
+    session_ = sessionmaker(bind=db.engine)()
+    try:
+        yield session_
+    finally:
+        session_.close()
 
 
 def get_storage_by_id(storage_id: int):
@@ -13,11 +26,12 @@ def get_container_by_id(storage_id: int, container_id: int):
 
 
 def get_all_item_changes(item_id: int, container_id: int):
-    tih = table.ItemHistory
-    return tih.query.filter(
-        tih.item_id == item_id,
-        tih.container_id == container_id,
-    ).all()
+    with session() as session_:
+        tih = table.ItemHistory
+        return session_.query(tih).filter(
+            tih.item_id == item_id,
+            tih.container_id == container_id,
+        ).all()
 
 
 def fill_with_sample_data():
