@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from safrs import SAFRSBase, SAFRSAPI
+from safrs import SAFRSBase
 
 from . import db
 
@@ -11,6 +11,7 @@ class Storage(SAFRSBase, db.Model):
     name = db.Column(db.Text, default='DefaultStorageName')
 
     supports_includes = False
+
     # user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
     def __repr__(self):
@@ -54,7 +55,7 @@ class ItemHistory(SAFRSBase, db.Model):
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"), nullable=False)
     container_id = db.Column(db.Integer, db.ForeignKey("containers.id"))
     amount = db.Column(db.Integer)
-    amount_unit = db.Column(db.Integer, db.ForeignKey("amount_units.id"))
+    amount_unit_id = db.Column(db.Integer, db.ForeignKey("amount_units.id"))
     changed = db.Column(db.DateTime, default=datetime.now().isoformat())
     shop_id = db.Column(db.Integer, db.ForeignKey("shops.id"))
 
@@ -65,7 +66,15 @@ class ItemHistory(SAFRSBase, db.Model):
         return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
-        return {"item_id": self.item_id, "amount": self.amount, "changed": self.changed}
+        return {
+            "id": self.id,
+            "item_id": self.item_id,
+            "container_id": self.container_id,
+            "amount": self.amount,
+            "amount_unit_id": self.amount_unit_id,
+            "changed": self.changed.isoformat(),
+            "shop_id": self.shop_id
+        }
 
 
 class AmountUnit(SAFRSBase, db.Model):
@@ -86,4 +95,3 @@ class Shop(SAFRSBase, db.Model):
 
     def to_dict(self):
         return {"name": self.name, "symbol": self.symbol}
-
