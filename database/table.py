@@ -8,9 +8,8 @@ from . import db
 class Storage(SAFRSBase, db.Model):
     __tablename__ = "storages"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    name = db.Column(db.Text, default='DefaultStorageName')
-
-    supports_includes = False
+    name = db.Column(db.Text, default="DefaultStorageName")
+    containers = db.relationship("Container")
 
     # user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
@@ -24,8 +23,9 @@ class Storage(SAFRSBase, db.Model):
 class Container(SAFRSBase, db.Model):
     __tablename__ = "containers"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    name = db.Column(db.Text, default='DefaultContainerName')
+    name = db.Column(db.Text, default="DefaultContainerName")
     storage_id = db.Column(db.Integer, db.ForeignKey("storages.id"), nullable=False)
+    item_history = db.relationship("ItemHistory")
 
     # created_by = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
