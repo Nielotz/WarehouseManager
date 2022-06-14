@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from safrs import SAFRSBase, SAFRSAPI
+from safrs import SAFRSBase
 
 from . import db
 
@@ -8,10 +8,8 @@ from . import db
 class Storage(SAFRSBase, db.Model):
     __tablename__ = "storages"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    name = db.Column(db.Text, default='DefaultStorageName')
-
-    supports_includes = False
-    # user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    name = db.Column(db.Text, default="DefaultStorageName")
+    containers = db.relationship("Container")
 
     def __repr__(self):
         return f"<{type(self).__name__}: {self.to_dict()}"
@@ -23,10 +21,9 @@ class Storage(SAFRSBase, db.Model):
 class Container(SAFRSBase, db.Model):
     __tablename__ = "containers"
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    name = db.Column(db.Text, default='DefaultContainerName')
+    name = db.Column(db.Text, default="DefaultContainerName")
     storage_id = db.Column(db.Integer, db.ForeignKey("storages.id"), nullable=False)
-
-    # created_by = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    item_history = db.relationship("ItemHistory")
 
     def __repr__(self):
         return f"<{type(self).__name__}: {self.to_dict()}"
@@ -54,18 +51,23 @@ class ItemHistory(SAFRSBase, db.Model):
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"), nullable=False)
     container_id = db.Column(db.Integer, db.ForeignKey("containers.id"))
     amount = db.Column(db.Integer)
-    amount_unit = db.Column(db.Integer, db.ForeignKey("amount_units.id"))
+    amount_unit_id = db.Column(db.Integer, db.ForeignKey("amount_units.id"))
     changed = db.Column(db.DateTime, default=datetime.now().isoformat())
     shop_id = db.Column(db.Integer, db.ForeignKey("shops.id"))
-
-    # prize = db.Column(db.Integer,  -- Stores prize * 100 to avoid float point inaccuracy.
-    # changed_by = db.Column(db.Integer,  REFERENCES userdata(user_id)
 
     def __repr__(self):
         return f"<{type(self).__name__}: {self.to_dict()}"
 
     def to_dict(self):
-        return {"item_id": self.item_id, "amount": self.amount, "changed": self.changed}
+        return {
+            "id": self.id,
+            "item_id": self.item_id,
+            "container_id": self.container_id,
+            "amount": self.amount,
+            "amount_unit_id": self.amount_unit_id,
+            "changed": self.changed.isoformat(),
+            "shop_id": self.shop_id
+        }
 
 
 class AmountUnit(SAFRSBase, db.Model):
@@ -86,4 +88,3 @@ class Shop(SAFRSBase, db.Model):
 
     def to_dict(self):
         return {"name": self.name, "symbol": self.symbol}
-
