@@ -14,7 +14,7 @@ redis_ = redis.Redis(host='localhost', port=6379, db=0)
 def _thread_function_get_all_item_changes(item_id: int, container_id: int, key: str):
     redis_.set(name=key, value="In progress")
     item_changes = database.api.get_all_item_changes(item_id, container_id)
-    sleep(10000)
+    sleep(60)
     redis_.set(name=key, value=json.dumps([ic.to_dict() for ic in item_changes]))
 
 
