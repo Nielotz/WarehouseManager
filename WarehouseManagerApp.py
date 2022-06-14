@@ -1,7 +1,4 @@
-from time import sleep
-
-import bleach
-from flask import Flask, jsonify
+from flask import Flask
 from safrs import SAFRSAPI
 
 import database
@@ -13,9 +10,9 @@ app = Flask(__name__)
 db = database.init(app)
 
 
-def extract_and_bleach(items: [], key: callable) -> [str, ]:
-    return [bleach.clean(text=key(item), tags=(), attributes={}, protocols=()) for item in items]
-
+# def extract_and_bleach(items: [], key: callable) -> [str, ]:
+#     return [bleach.clean(text=key(item), tags=(), attributes={}, protocols=()) for item in items]
+#
 
 # class RestApi:
 #     class Get:
