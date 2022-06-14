@@ -9,6 +9,7 @@ from safrs.safrs_types import SAFRSID
 import redis_api
 
 
+# noinspection PyMethodMayBeStatic,PyMethodParameters
 class AllItemChangesQuery:
     """
     The safrs sqla serialization calls some sqlalchemy methods

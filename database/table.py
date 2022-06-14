@@ -11,8 +11,6 @@ class Storage(SAFRSBase, db.Model):
     name = db.Column(db.Text, default="DefaultStorageName")
     containers = db.relationship("Container")
 
-    # user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-
     def __repr__(self):
         return f"<{type(self).__name__}: {self.to_dict()}"
 
@@ -26,8 +24,6 @@ class Container(SAFRSBase, db.Model):
     name = db.Column(db.Text, default="DefaultContainerName")
     storage_id = db.Column(db.Integer, db.ForeignKey("storages.id"), nullable=False)
     item_history = db.relationship("ItemHistory")
-
-    # created_by = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     def __repr__(self):
         return f"<{type(self).__name__}: {self.to_dict()}"
@@ -58,9 +54,6 @@ class ItemHistory(SAFRSBase, db.Model):
     amount_unit_id = db.Column(db.Integer, db.ForeignKey("amount_units.id"))
     changed = db.Column(db.DateTime, default=datetime.now().isoformat())
     shop_id = db.Column(db.Integer, db.ForeignKey("shops.id"))
-
-    # prize = db.Column(db.Integer,  -- Stores prize * 100 to avoid float point inaccuracy.
-    # changed_by = db.Column(db.Integer,  REFERENCES userdata(user_id)
 
     def __repr__(self):
         return f"<{type(self).__name__}: {self.to_dict()}"
